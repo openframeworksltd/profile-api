@@ -1,0 +1,23 @@
+{
+  "name": "profile-api",
+  "version": "1.0.0",
+  "description": "Profile API",
+  "main": "app.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/openframeworksltd/profile-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/openframeworksltd/profile-api/issues"
+  },
+  "homepage": "https://github.com/openframeworksltd/profile-api#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "typescript": "^4.0.5"
+  }
+}
