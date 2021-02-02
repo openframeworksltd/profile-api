@@ -108,3 +108,5 @@ dist
 .idea/modules.xml
 .idea/profile-api.iml
 .idea/vcs.xml
+
+docs/*.png
