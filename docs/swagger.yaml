@@ -44,6 +44,10 @@ paths:
                   type: array
                   items:
                     type: string
+                imageUrl:
+                  type: string
+                cvUrl:
+                  type: string
   /profile/{profileId}:
     get:
       summary: Gets a profile by id
@@ -78,8 +82,12 @@ paths:
                 type: array
                 items:
                   type: string
+              imageUrl:
+                type: string
+              cvUrl:
+                type: string
   /profile:
-    post:
+    put:
       summary: Add a new profile resource
       operationId: create
       consumes:
@@ -98,10 +106,6 @@ paths:
             properties:
               name:
                 type: string
-              image:
-                type: string
-                required:
-                  - url
                 properties:
                   url:
                     type: string
@@ -132,6 +136,10 @@ paths:
                 type: array
                 items:
                   type: string
+              imageUrl:
+                type: string
+              cvUrl:
+                type: string
       responses:
         '201':
           description: created profile successfully
