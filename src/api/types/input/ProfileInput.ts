@@ -22,11 +22,6 @@ export class ProfileInput implements Partial<Profile> {
     public phone: string;
 
     @Field(type => String, {
-        description: 'The summary of the profile.'
-    })
-    public summary: string;
-
-    @Field(type => String, {
         description: 'The url of where profile image is stored on the cloud.',
         nullable: true
     })

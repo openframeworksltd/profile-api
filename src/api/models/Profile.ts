@@ -19,10 +19,6 @@ export class Profile {
     @Column()
     public email: string;
 
-    @IsNotEmpty()
-    @Column()
-    public summary: string;
-
     @Column({
         name: 'image_url',
         nullable: true
@@ -49,7 +45,7 @@ export class Profile {
     @Column()
     public updatedAt: Date;
 
-    @ManyToOne(type => User, user => user.profile)
+    @ManyToOne(type => User, user => user.profiles)
     @JoinColumn({ name: 'user_id' })
     public user: User;
 

@@ -23,9 +23,6 @@ type Profile {
   # The phone number of the profile owner.
   phone: String!
 
-  # Profile summary.
-  summary: String!
-
   # The url of where the profile image is stored on the cloud
   imageUrl: String!
 
@@ -49,9 +46,6 @@ input ProfileInput {
 
   # The phone number of the profile.
   phone: String
-
-  # The summary of the profile.
-  summary: String!
 
   # The url of where profile image is stored on the cloud.
   imageUrl: String

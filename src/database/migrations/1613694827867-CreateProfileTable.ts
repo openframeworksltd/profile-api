@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import {MigrationInterface, QueryRunner, Table} from 'typeorm';
 
 export class CreateProfileTable1613694827867 implements MigrationInterface {
 
@@ -31,12 +31,6 @@ export class CreateProfileTable1613694827867 implements MigrationInterface {
                     isPrimary: false,
                     isNullable: false,
                 }, {
-                    name: 'summary',
-                    type: 'varchar',
-                    length: '255',
-                    isPrimary: false,
-                    isNullable: false,
-                } , {
                     name: 'image_url',
                     type: 'varchar',
                     length: '255',

@@ -52,7 +52,7 @@ export class User {
     public username: string;
 
     @OneToMany(type => Profile, profile => profile.user)
-    public profile: Profile[];
+    public profiles: Profile[];
 
     public toString(): string {
         return `${this.firstName} ${this.lastName} (${this.email})`;

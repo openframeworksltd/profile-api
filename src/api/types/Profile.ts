@@ -26,11 +26,6 @@ export class Profile {
     public phone: string;
 
     @Field({
-        description: 'Profile summary.',
-    })
-    public summary: string;
-
-    @Field({
         description: 'The url of where the profile image is stored on the cloud',
     })
     public imageUrl: string;
