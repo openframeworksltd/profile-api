@@ -35,6 +35,12 @@ export class ProfileService {
         return this.profileRepository.findOne({ id });
     }
 
+    public update(id: string, profile: Profile): Promise<Profile> {
+        this.log.info('Update a profile');
+        profile.id = id;
+        return this.profileRepository.save(profile);
+    }
+
     public findByUser(user: User): Promise<Profile[]> {
         this.log.info('Find all profiles of the user', user.toString());
         return this.profileRepository.find({
@@ -42,5 +48,11 @@ export class ProfileService {
                 userId: user.id,
             },
         });
+    }
+
+    public async delete(id: string): Promise<void> {
+        this.log.info('Delete a profile');
+        await this.profileRepository.delete(id);
+        return;
     }
 }

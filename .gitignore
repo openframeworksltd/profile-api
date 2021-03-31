@@ -110,3 +110,5 @@ dist
 .idea/vcs.xml
 
 docs/*.png
+.idea/inspectionProfiles/
+/tsconfig.build.json

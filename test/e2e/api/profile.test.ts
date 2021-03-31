@@ -1,16 +1,16 @@
 import * as nock from 'nock';
 import request from 'supertest';
 import {BootstrapSettings} from "../utils/bootstrap";
-import {User} from "../../../src/api/models/User";
+import {Profile} from "../../../src/api/models/Profile";
 import {runSeed} from "typeorm-seeding";
 import { prepareServer } from '../utils/server';
-import { CreateBruce } from '../../../src/database/seeds/CreateBruce';
+import {CreateProfile} from "../../../src/database/seeds/CreateProfile";
 
 describe('/api/users', () => {
 
-    let bruce: User;
+    let johnProfile: Profile;
     let settings: BootstrapSettings;
-    let bruceAuthorization: string;
+    let userAuthorisation: string;
 
     // -------------------------------------------------------------------------
     // Setup up
@@ -18,8 +18,8 @@ describe('/api/users', () => {
 
     beforeAll(async () => {
         settings = await prepareServer({ migrate: true });
-        bruce = await runSeed<User>(CreateBruce);
-        bruceAuthorization = Buffer.from(`${bruce.username}:1234`).toString('base64');
+        johnProfile = await runSeed<Profile>(CreateProfile);
+        userAuthorisation = Buffer.from(`${johnProfile.user.username}:1234`).toString('base64');
     });
 
     // -------------------------------------------------------------------------
@@ -34,27 +34,29 @@ describe('/api/users', () => {
     // Test cases
     // -------------------------------------------------------------------------
 
-    test('GET: / should return a list of users', async (done) => {
+    test('GET: / should return a list of profiles', async (done) => {
         const response = await request(settings.app)
-            .get('/api/users')
-            .set('Authorization', `Basic ${bruceAuthorization}`)
+            .get('/api/profiles')
+            .set('Authorization', `Basic ${userAuthorisation}`)
             .expect('Content-Type', /json/)
             .expect(200);
         expect(response.body.length).toBe(1);
         done();
     });
 
-    test('GET: /:id should return bruce', async (done) => {
+    test('GET: /:id should return profile', async (done) => {
         const response = await request(settings.app)
-            .get(`/api/users/${bruce.id}`)
-            .set('Authorization', `Basic ${bruceAuthorization}`)
+            .get(`/api/profiles/${johnProfile.id}`)
+            .set('Authorization', `Basic ${userAuthorisation}`)
             .expect('Content-Type', /json/)
             .expect(200);
 
-        expect(response.body.id).toBe(bruce.id);
-        expect(response.body.firstName).toBe(bruce.firstName);
-        expect(response.body.lastName).toBe(bruce.lastName);
-        expect(response.body.email).toBe(bruce.email);
+        console.log(`response: ${JSON.stringify(response.body)}`);
+
+        expect(response.body.id).toBe(johnProfile.id);
+        expect(response.body.email).toBe(johnProfile.email);
+        expect(response.body.phone).toBe(johnProfile.phone);
+        expect(response.body.name).toBe(johnProfile.name);
         done();
     });
 
