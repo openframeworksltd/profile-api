@@ -71,6 +71,7 @@ All script are defined in the `package-scripts.js` file, but the most important 
 
 ### Tests
 
+- Create Data using `npm start db.setup`
 - Run the unit tests using `yarn or npm start test` 
 - Run the integration tests using `yarn or npm start test.integration`.
 - Run the e2e tests using `yarn or npm start test.e2e`.
