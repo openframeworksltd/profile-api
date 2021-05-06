@@ -65,6 +65,8 @@ All script are defined in the `package-scripts.js` file, but the most important 
 
 - Install all dependencies with `yarn or npm install`
 
+- start `docker compose up`
+
 ### Linting
 
 - Run code quality analysis using `yarn or npm start lint`. This runs tslint.
