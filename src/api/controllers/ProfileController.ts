@@ -1,12 +1,12 @@
-import { IsEmail, IsNotEmpty, IsUUID, IsPhoneNumber} from 'class-validator';
+import {IsEmail, IsNotEmpty, IsUUID, IsPhoneNumber} from 'class-validator';
 import {
-    Authorized, Body, Delete, Get, JsonController, OnUndefined, Param, Post, Put
+    Authorized, BadRequestError, Body, Delete, Get, JsonController, OnUndefined, Param, Post, Put
 } from 'routing-controllers';
-import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
+import {OpenAPI, ResponseSchema} from 'routing-controllers-openapi';
 
-import { ProfileNotFoundError } from '../errors/ProfileNotFoundError';
-import { Profile } from '../models/Profile';
-import { ProfileService } from '../services/ProfileService';
+import {ProfileNotFoundError} from '../errors/ProfileNotFoundError';
+import {Profile} from '../models/Profile';
+import {ProfileService} from '../services/ProfileService';
 import * as uuid from "uuid";
 
 class BaseProfile {
@@ -37,15 +37,16 @@ export class CreateProfileBody extends BaseProfile {
 
 @Authorized()
 @JsonController('/profiles')
-@OpenAPI({ security: [{ basicAuth: [] }] })
+@OpenAPI({security: [{basicAuth: []}]})
 export class ProfileController {
 
     constructor(
         private profileService: ProfileService
-    ) { }
+    ) {
+    }
 
     @Get()
-    @ResponseSchema(ProfileResponse, { isArray: true })
+    @ResponseSchema(ProfileResponse, {isArray: true})
     public find(): Promise<Profile[]> {
         return this.profileService.find();
     }
@@ -60,6 +61,9 @@ export class ProfileController {
     @Post()
     @ResponseSchema(ProfileResponse)
     public create(@Body() body: CreateProfileBody): Promise<Profile> {
+        if (body.userId === undefined || body.userId === null || body.userId === "") {
+            throw new BadRequestError(`user id is either, null or undefined : ${body.userId}`);
+        }
         const profile = new Profile();
         profile.createdAt = new Date();
         profile.name = body.name

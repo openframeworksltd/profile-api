@@ -7,12 +7,15 @@ import {Profile} from "../models/Profile";
 import {v4 as uuid} from 'uuid';
 import {events} from "../subscribers/events";
 import {User} from "../models/User";
+import {UserRepository} from "../repositories/UserRepository";
+import {NotFoundError} from "routing-controllers";
 
 @Service()
 export class ProfileService {
 
     constructor(
         @OrmRepository() private profileRepository: ProfileRepository,
+        @OrmRepository() private userRepository: UserRepository,
         @EventDispatcher() private eventDispatcher: EventDispatcherInterface,
         @Logger(__filename) private log: LoggerInterface
     ) { }
@@ -25,6 +28,10 @@ export class ProfileService {
     public async create(profile: Profile): Promise<Profile> {
         this.log.info('Create a new profile => ', profile.toString());
         profile.id = uuid();
+        const userId = await this.userRepository.findOne(profile.userId);
+        if(!userId){
+            throw new NotFoundError('user not found');
+        }
         const newProfile = await this.profileRepository.save(profile);
         this.eventDispatcher.dispatch(events.profile.created, newProfile);
         return newProfile;
