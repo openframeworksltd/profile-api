@@ -27,11 +27,14 @@ class BaseProfile {
 
 export class ProfileResponse extends BaseProfile {
     @IsUUID()
+    @IsNotEmpty()
     public id: string;
 }
 
 export class CreateProfileBody extends BaseProfile {
     @IsUUID()
+    // todo: make test pass with @IsNotEmpty
+    @IsNotEmpty()
     public userId: string;
 }
 

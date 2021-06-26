@@ -239,7 +239,8 @@ module.exports = {
                 },
                 run: {
                     // -i. Run all tests serially in the current process, rather than creating a worker pool of child processes that run tests. This can be useful for debugging.
-                    script: 'cross-env NODE_ENV=test jest --testPathPattern=e2e -i',
+                    // todo: fix issue with jest
+                    script: 'cross-env NODE_ENV=test jest --testPathPattern=e2e -i --forceExit --detectOpenHandles',
                     hiddenFromHelp: true
                 },
                 verbose: {
