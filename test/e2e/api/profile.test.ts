@@ -5,7 +5,6 @@ import {Profile} from "../../../src/api/models/Profile";
 import {runSeed} from "typeorm-seeding";
 import {prepareServer} from '../utils/server';
 import {CreateProfile} from "../../../src/database/seeds/CreateProfile";
-import {closeDatabase} from "../../utils/database";
 
 describe('/api/users', () => {
 
@@ -29,7 +28,7 @@ describe('/api/users', () => {
 
     afterAll(async () => {
         nock.cleanAll();
-        await closeDatabase(settings.connection);
+        await settings.connection.close();
         await settings.server.close();
     });
 
@@ -37,7 +36,7 @@ describe('/api/users', () => {
     // Test cases
     // -------------------------------------------------------------------------
 
-    test.skip('GET: / should return a list of profiles', async (done) => {
+    test('GET: / should return a list of profiles', async (done) => {
         const response = await request(settings.app)
             .get('/api/profiles')
             .set('Authorization', `Basic ${userAuthorisation}`)
@@ -47,7 +46,7 @@ describe('/api/users', () => {
         done();
     });
 
-    test.skip('GET: /:id should return profile', async (done) => {
+    test('GET: /:id should return profile', async (done) => {
         const response = await request(settings.app)
             .get(`/api/profiles/${johnProfile.id}`)
             .set('Authorization', `Basic ${userAuthorisation}`)
