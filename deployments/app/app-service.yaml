@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: app
+spec:
+  type: LoadBalancer
+  sessionAffinity: ClientIP
+  ports:
+    - name: http
+      nodePort: 31704
+      port: 9000
+      protocol: TCP
+      targetPort: 9000
+  selector:
+    app: profile-api
+status:
+  loadBalancer: { }

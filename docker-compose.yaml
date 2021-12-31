@@ -31,7 +31,7 @@ services:
     ports:
       - "8080:8080"
   app:
-    build: .
+    image: gcr.io/profile-api-299602/profile-api:latest
     depends_on:
       db:
         condition: service_healthy
@@ -41,6 +41,7 @@ services:
     command: bash -c "npm run setup && npm start serve"
     volumes:
       - .:/app
+      - /app/node_modules
     ports:
       - "9000:9000"
     networks:
