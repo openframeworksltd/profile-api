@@ -1,0 +1,117 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: profile-api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: profile-api
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: profile-api
+    spec:
+      containers:
+        - args:
+            - bash
+            - -c
+            - npm install && npm start serve
+          image: gcr.io/profile-api-299602/profile-api:latest
+          imagePullPolicy: Always
+          name: profile-api
+          env:
+            - name: APP_NAME
+              value: "profile-api"
+            - name: APP_SCHEMA
+              value: "http"
+            - name: APP_HOST
+              value: "localhost"
+            - name: APP_PORT
+              value: "9000"
+            - name: APP_ROUTE_PREFIX
+              value: "/api"
+            - name: APP_BANNER
+              value: "true"
+            - name: SWAGGER_ENABLED
+              value: "true"
+            - name: SWAGGER_ROUTE
+              value: "/swagger"
+            - name: SWAGGER_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: swagger-username
+            - name: SWAGGER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: swagger-password
+            - name: MONITOR_ENABLED
+              value: "true"
+            - name: MONITOR_ROUTE
+              value: "/monitor"
+            - name: MONITOR_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: monitor-username
+            - name: MONITOR_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: monitor-password
+            - name: TYPEORM_MIGRATIONS
+              value: "src/database/migrations/**/*.ts"
+            - name: TYPEORM_MIGRATIONS_DIR
+              value: "src/database/migrations"
+            - name: TYPEORM_ENTITIES
+              value: "src/api/models/**/*.ts"
+            - name: TYPEORM_ENTITIES_DIR
+              value: "src/api/models"
+            - name: CONTROLLERS
+              value: "src/api/controllers/**/*Controller.ts"
+            - name: MIDDLEWARES
+              value: "src/api/middlewares/**/*Middleware.ts"
+            - name: INTERCEPTORS
+              value: "src/api/interceptors/**/*Interceptor.ts"
+            - name: SUBSCRIBERS
+              value: "src/api/subscribers/**/*Subscriber.ts"
+            - name: RESOLVERS
+              value: "src/api/resolvers/**/*Resolver.ts"
+            - name: LOG_LEVEL
+              value: "debug"
+            - name: LOG_OUTPUT
+              value: "dev"
+            - name: TYPEORM_CONNECTION
+              value: "mysql"
+            - name: TYPEORM_HOST
+              value: "db"
+            - name: TYPEORM_PORT
+              value: "3306"
+            - name: TYPEORM_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: db-username
+            - name: TYPEORM_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: db-password
+            - name: TYPEORM_DATABASE
+              value: profile_db
+            - name: TYPEORM_SYNCHRONIZE
+              value: "false"
+            - name: TYPEORM_LOGGING
+              value: "error"
+            - name: TYPEORM_LOGGER
+              value: "advanced-console"
+          ports:
+            - containerPort: 9000
+      volumes:
+        - name: app
+          persistentVolumeClaim:
+            claimName: app
